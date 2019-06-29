@@ -6,8 +6,8 @@ LOCALS @@
 start:
 jmp main
 
-draw_color equ 22h
-bg_color equ 0FFh
+draw_color equ 0CCh ; 22
+bg_color equ 0BBh ; FF
 on  db 0DBh, draw_color
 off db 0DBh, bg_color
 
@@ -168,6 +168,25 @@ proc drawLine
     ret 8
 endp drawLine
 
+; origin_x dd 15.0
+; origin_y dd 15.0
+; origin_z dd 5.0
+; lines_count dw 12
+; lines dd 10.0, 10.0, 0.0, 10.0, 20.0, 0.0, \
+;          10.0, 20.0, 0.0, 20.0, 20.0, 0.0, \
+;          20.0, 20.0, 0.0, 20.0, 10.0, 0.0, \
+;          20.0, 10.0, 0.0, 10.0, 10.0, 0.0, \
+;          10.0, 10.0, 10.0, 10.0, 20.0, 10.0, \
+;          10.0, 20.0, 10.0, 20.0, 20.0, 10.0, \
+;          20.0, 20.0, 10.0, 20.0, 10.0, 10.0, \
+;          20.0, 10.0, 10.0, 10.0, 10.0, 10.0, \
+;          10.0, 10.0, 0.0, 10.0, 10.0, 10.0, \
+;          10.0, 20.0, 0.0, 10.0, 20.0, 10.0, \
+;          20.0, 20.0, 0.0, 20.0, 20.0, 10.0, \
+;          20.0, 10.0, 0.0, 20.0, 10.0, 10.0,
+; lines_int_cached dw 0
+; lines_int dw 72 dup (?)
+
 origin_x dd 12.5
 origin_y dd 12.5
 origin_z dd 4.0
@@ -218,7 +237,7 @@ proc turnX
     fld dword ptr [si]+8  ; raw_z cos(-15*pi/180) sin(-15*pi/180)
     fld origin_z          ; origin_z raw_z cos(-15*pi/180) sin(-15*pi/180)
     fsubp                 ; z cos(-15*pi/180) sin(-15*pi/180)
-    fld dword ptr [si]+4    ; raw_y z cos(-15*pi/180) sin(-15*pi/180)
+    fld dword ptr [si]+4  ; raw_y z cos(-15*pi/180) sin(-15*pi/180)
     fld origin_y          ; origin_y raw_y z cos(-15*pi/180) sin(-15*pi/180)
     fsubp                 ; y z cos(-15*pi/180) sin(-15*pi/180)
     fld st(1)             ; z y z cos(-15*pi/180) sin(-15*pi/180)
